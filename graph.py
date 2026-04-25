@@ -44,26 +44,4 @@ checkpointer.setup()
 
 graph = graph_builder.compile(checkpointer=checkpointer)
 
-def main():
-    create_table()
-    thread_id = input("Enter your session ID (any name/number): ")
-    config = {"configurable": {"thread_id": thread_id}}
-    
-    print(f"\nSession '{thread_id}' started! Type your message:\n")
-    
-    while True:
-        user_query = input("> ")
-        
-        if user_query.lower() == "exit":
-            break
-
-        state = State(
-            messages=[{"role": "user", "content": user_query}]
-        )
-
-        for event in graph.stream(state, config, stream_mode="values"):
-            if "messages" in event:
-                last_message = event["messages"][-1]
-                print(f"\n{last_message.type.upper()}: {last_message.content}\n")
-
-main()
+create_table()
